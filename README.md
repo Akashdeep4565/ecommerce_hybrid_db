@@ -1,5 +1,7 @@
 # Hybrid E-Commerce System - Task 2 Setup Instructions
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Akashdeep4565/ecommerce_hybrid_db)
+
 ## Prerequisites
 - Docker & Docker Compose installed
 - Python 3.8+ installed

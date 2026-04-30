@@ -1,0 +1,19 @@
+image: gitpod/workspace-python
+tasks:
+  - init: |
+      pip install -r requirements_api.txt
+      pip install -r requirements.txt
+    command: |
+      docker-compose up -d
+      echo "Waiting for databases to initialize..."
+      sleep 10
+      python populate_data.py
+      uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+ports:
+  - port: 8000
+    onOpen: open-preview
+    visibility: public
+  - port: 5433
+    onOpen: ignore
+  - port: 27018
+    onOpen: ignore
