@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hybrid Database Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Hybrid CRUD APP</h1>
+</header>
+
+<div class="container">
+
+    <!-- ADD PRODUCT -->
+    <div class="card">
+        <h2>Add Product</h2>
+        <form id="add-product-form">
+            <input name="product_id" type="number" placeholder="Product ID (e.g. 51)" required>
+            <input name="name" placeholder="Name" required>
+            <input name="price" type="number" step="0.01" placeholder="Price" required>
+            <input name="stock" type="number" placeholder="Stock" required>
+            <select name="category" required>
+                <option value="" disabled selected>Select Category...</option>
+                <option value="Computer">Computer</option>
+                <option value="Mobile">Mobile</option>
+                <option value="Other Electronics">Other Electronics</option>
+            </select>
+            <input name="description" placeholder="Description" required>
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+
+    <!-- PLACE ORDER -->
+    <div class="card">
+        <h2>Place Order</h2>
+        <form id="place-order-form">
+            <input name="user_id" type="number" placeholder="User ID" required>
+            <input name="product_id" type="number" placeholder="Product ID" required>
+            <input name="quantity" type="number" placeholder="Quantity" required>
+            <button type="submit">Place Order</button>
+        </form>
+    </div>
+
+    <!-- VIEW PRODUCT -->
+    <div class="card">
+        <h2>View Product</h2>
+        <form id="view-product-form">
+            <input name="product_id" type="number" placeholder="Product ID" required>
+            <button type="submit">View Details</button>
+        </form>
+        <div id="product-details-result" class="result" style="display:none;"></div>
+    </div>
+
+    <!-- ADD REVIEW -->
+    <div class="card">
+        <h2>Add Review</h2>
+        <form id="add-review-form">
+            <input name="product_id" type="number" placeholder="Product ID" required>
+            <input name="user_id" type="number" placeholder="User ID" required>
+            <input name="rating" type="number" min="1" max="5" placeholder="Rating (1-5)" required>
+            <input name="comment" placeholder="Comment" required>
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- Simple Toast for messages -->
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
