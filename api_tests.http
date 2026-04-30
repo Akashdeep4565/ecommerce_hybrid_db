@@ -1,0 +1,56 @@
+### Hybrid E-Commerce System API Tests 
+### You can use this file with the VSCode REST Client extension or import into Postman/Insomnia
+
+@baseUrl = http://localhost:8000
+
+### 1. Add new product
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "Super Ultra Wide Monitor",
+  "price": 899.99,
+  "stock_quantity": 25,
+  "category": "Electronics",
+  "details": {
+    "description": "A massive 49-inch curved monitor for the ultimate workstation.",
+    "images": ["http://example.com/monitor1.jpg"],
+    "attributes": {
+      "brand": "DisplayCorp",
+      "refresh_rate": "144Hz"
+    }
+  }
+}
+
+### 2. View product detail (Assuming ID 51 based on 50 seeded products)
+GET {{baseUrl}}/products/51
+
+### 3. Add customer review
+POST {{baseUrl}}/products/51/reviews
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "rating": 5,
+  "comment": "Absolutely phenomenal screen real estate!"
+}
+
+### 4. Place an order (ACID Transaction)
+POST {{baseUrl}}/orders
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "items": [
+    {
+      "product_id": 51,
+      "quantity": 2
+    }
+  ]
+}
+
+### 5. View product detail again to see reduced stock (25 -> 23) and new review
+GET {{baseUrl}}/products/51
+
+### 6. User purchase history (Combined with MongoDB Activity logs)
+GET {{baseUrl}}/users/1/history

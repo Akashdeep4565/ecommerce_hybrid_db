@@ -1,0 +1,22 @@
+# Environments
+venv/
+env/
+.env
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# IDEs
+.vscode/
+.idea/
+
+# Database / OS
+*.sqlite3
+.DS_Store
