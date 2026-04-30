@@ -1,3 +1,32 @@
+// Intercept fetch if on github.io to mock API calls for the live demo
+const originalFetch = window.fetch;
+window.fetch = async function(url, options) {
+    if (window.location.hostname.includes('github.io')) {
+        console.log(`Mocking fetch to ${url}`);
+        await new Promise(r => setTimeout(r, 400)); // Simulate network delay
+        
+        if (url.startsWith('/products')) {
+            return { ok: true, json: async () => ({ message: "✔ Product added successfully (Demo Mode)", product_id: 999 }) };
+        }
+        if (url.startsWith('/place_order')) {
+            return { ok: true, json: async () => ({ message: "✔ Order placed successfully (Demo Mode)", order_id: 888, total: 100 }) };
+        }
+        if (url.startsWith('/view_product')) {
+            return { ok: true, json: async () => ({
+                id: 1, name: "Sample Demo Product", price: 99.99, stock_quantity: 42,
+                category: "Electronics", description: "This is a simulated product for the live demo since GitHub Pages cannot run the Python/Postgres backend.",
+                reviews: [{user_id: 1, rating: 5, comment: "Great simulated product!"}],
+                average_rating: 5.0
+            }) };
+        }
+        if (url.startsWith('/add_review')) {
+            return { ok: true, json: async () => ({ message: "✔ Review added successfully (Demo Mode)" }) };
+        }
+        return { ok: false, json: async () => ({ detail: "Not found in demo mode" }) };
+    }
+    return originalFetch(url, options);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     
     // Add Product
