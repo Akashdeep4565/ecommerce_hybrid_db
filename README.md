@@ -26,9 +26,16 @@ We have a Python script to populate the required sample data (50 products, 20 us
    ```
 
 ## Step 3: Populate Data
-Run the population script to fill both PostgreSQL and MongoDB:
+You can populate the database manually by executing the generated insert files:
+
+**For PostgreSQL:**
 ```bash
-python populate_data.py
+docker exec -i hybrid_postgres psql -U user -d ecommerce_hybrid < manual_inserts.sql
+```
+
+**For MongoDB:**
+```bash
+docker exec -i hybrid_mongodb mongosh -u root -p rootpassword --authenticationDatabase admin < manual_inserts.js
 ```
 
 ## Step 4: Verify the Data (Screenshots for submission)

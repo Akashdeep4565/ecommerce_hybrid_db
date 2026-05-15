@@ -1,4 +1,5 @@
-// Intercept fetch if on github.io to mock API calls for the live demo
+let mockProducts = {};
+
 const originalFetch = window.fetch;
 window.fetch = async function(url, options) {
     if (window.location.hostname.includes('github.io')) {
@@ -6,12 +7,34 @@ window.fetch = async function(url, options) {
         await new Promise(r => setTimeout(r, 400)); // Simulate network delay
         
         if (url.startsWith('/products')) {
-            return { ok: true, json: async () => ({ message: "✔ Product added successfully (Demo Mode)", product_id: 999 }) };
+            if (options && options.method === 'POST') {
+                const body = JSON.parse(options.body);
+                mockProducts[body.product_id] = {
+                    id: body.product_id,
+                    name: body.name,
+                    price: body.price,
+                    stock_quantity: body.stock,
+                    category: body.category,
+                    description: body.description,
+                    reviews: [],
+                    average_rating: 0
+                };
+                return { ok: true, json: async () => ({ message: "✔ Product added successfully (Demo Mode)", product_id: body.product_id }) };
+            }
+            // For GET /products, just return an empty list or some defaults
+            return { ok: true, json: async () => Object.values(mockProducts) };
         }
+        
         if (url.startsWith('/place_order')) {
             return { ok: true, json: async () => ({ message: "✔ Order placed successfully (Demo Mode)", order_id: 888, total: 100 }) };
         }
+        
         if (url.startsWith('/view_product')) {
+            const productId = new URLSearchParams(url.split('?')[1]).get('product_id');
+            if (mockProducts[productId]) {
+                return { ok: true, json: async () => mockProducts[productId] };
+            }
+            // Default sample data if not found
             return { ok: true, json: async () => ({
                 id: 1, name: "Sample Demo Product", price: 99.99, stock_quantity: 42,
                 category: "Electronics", description: "This is a simulated product for the live demo since GitHub Pages cannot run the Python/Postgres backend.",
@@ -19,13 +42,16 @@ window.fetch = async function(url, options) {
                 average_rating: 5.0
             }) };
         }
+        
         if (url.startsWith('/add_review')) {
             return { ok: true, json: async () => ({ message: "✔ Review added successfully (Demo Mode)" }) };
         }
+        
         return { ok: false, json: async () => ({ detail: "Not found in demo mode" }) };
     }
     return originalFetch(url, options);
 };
+
 
 document.addEventListener('DOMContentLoaded', () => {
     
